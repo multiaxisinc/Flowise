@@ -24,7 +24,7 @@ ENV NODE_PATH=/root/.flowise/nodes
 # Set working directory
 WORKDIR /usr/src
 
-# ✅ Clone custom nodes from public repo (using git:// to avoid HTTPS auth)
+# Clone custom nodes from public repo (using git:// to avoid HTTPS auth)
 RUN mkdir -p /root/.flowise/nodes && \
     git clone --depth 1 git://github.com/FlowiseAI/flowise-custom-nodes.git /root/.flowise/nodes/flowise-custom-nodes
 
