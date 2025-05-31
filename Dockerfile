@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-# Install required dependencies including Git
+# Install dependencies
 RUN apk add --no-cache \
     git \
     curl \
@@ -13,28 +13,23 @@ RUN apk add --no-cache \
     pango-dev \
     chromium
 
-# Puppeteer + Chromium setup
+# Puppeteer setup
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
-# Node memory and node path for custom modules
+# Node performance
 ENV NODE_OPTIONS=--max-old-space-size=8192
-ENV NODE_PATH=/root/.flowise/nodes
 
-# Set working directory
+# Working directory
 WORKDIR /usr/src
-
-# Clone custom nodes from public repo (using git:// to avoid HTTPS auth)
-RUN mkdir -p /root/.flowise/nodes && \
-    git clone --depth 1 git://github.com/FlowiseAI/flowise-custom-nodes.git /root/.flowise/nodes/flowise-custom-nodes
 
 # Install pnpm
 RUN npm install -g pnpm
 
-# Copy Flowise source code
+# Copy Flowise source code into container
 COPY . .
 
-# Install dependencies and build
+# Install deps and build
 RUN pnpm install && pnpm build
 
 # Expose port
